@@ -18,10 +18,6 @@ export default function FAQ() {
             a: "AI analyzes your ingredients, cuisine preference, cooking time, and difficulty to create personalized recipes."
         },
 
-        {
-            q: "Can I save generated recipes?",
-            a: "Yes. Logged-in users can save recipes and manage them later."
-        },
 
         {
             q: "Do I need cooking experience?",
@@ -123,8 +119,8 @@ export default function FAQ() {
                                 <div
 
                                     className={`px-6 overflow-hidden transition-all duration-300 ${openIndex === index
-                                            ? "max-h-40 pb-6"
-                                            : "max-h-0"
+                                        ? "max-h-40 pb-6"
+                                        : "max-h-0"
                                         }`}
 
                                 >

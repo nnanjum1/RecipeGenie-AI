@@ -57,33 +57,59 @@ const RecipeDetails = () => {
         setLiked(isLiked === "true");
     }, [id]);
 
-    const handleLike = () => {
-        if (!session) {
-            toast.error("Please login to like recipes");
-            return;
+    const handleLike = async () => {
+
+        try {
+
+            const newLikedStatus = !liked;
+
+
+            const res = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/recipes/like/${id}`,
+                {
+                    method: "PATCH",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        liked: newLikedStatus
+                    })
+                }
+            );
+
+
+            if (res.ok) {
+
+                setLiked(newLikedStatus);
+
+                toast.success(
+                    newLikedStatus
+                        ? "Recipe liked!"
+                        : "Like removed!"
+                );
+
+                queryClient.invalidateQueries({
+                    queryKey: [
+                        "recipe",
+                        id
+                    ]
+                });
+
+            }
+
+        }
+        catch (error) {
+
+            console.log(error);
+
+            toast.error(
+                "Something went wrong"
+            );
+
         }
 
-        if (liked) {
-            // Remove like
-            likeMutation.mutate({
-                id,
-                change: -1,
-            });
-
-            localStorage.removeItem(`liked-${id}`);
-
-            setLiked(false);
-        } else {
-            // Add like
-            likeMutation.mutate({
-                id,
-                change: 1,
-            });
-
-            localStorage.setItem(`liked-${id}`, "true");
-
-            setLiked(true);
-        }
     };
 
 
@@ -387,8 +413,8 @@ const RecipeDetails = () => {
                 <button
                     onClick={handleLike}
                     className={`font-semibold transition ${liked
-                            ? "text-green-700"
-                            : "text-green-500 hover:text-green-600"
+                        ? "text-green-700"
+                        : "text-green-500 hover:text-green-600"
                         }`}
                 >
                     {liked ? "Liked" : "Like"}

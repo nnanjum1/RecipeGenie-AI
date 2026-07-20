@@ -21,7 +21,7 @@ export default function Footer() {
 
     return (
 
-        <footer className="bg-orange-200 text-gray-800 mt-20">
+        <footer className="bg-orange-200 text-gray-800">
 
 
             <div className="max-w-6xl mx-auto px-5 py-12">

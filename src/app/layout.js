@@ -24,7 +24,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${poppins.variable} ${manrope.variable}`}>
+      <body className={`${poppins.variable} ${manrope.variable} min-h-screen flex flex-col bg-orange-200`}>
         <QueryProvider>
           <Navbar />
           {children}
