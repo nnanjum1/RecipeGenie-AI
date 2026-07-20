@@ -11,10 +11,10 @@ import Link from "next/link";
 const FeaturedRecipes = () => {
     const { data, isLoading } = useQuery({
         queryKey: ["recipes"],
-        queryFn: getRecipes,
+        queryFn: () => getRecipes(1),
     });
 
-    const recipes = Array.isArray(data) ? data : [];
+    const recipes = data?.recipes || [];
 
     const featured = [...recipes]
         .sort(

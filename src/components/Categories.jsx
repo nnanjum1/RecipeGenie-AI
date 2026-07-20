@@ -12,7 +12,7 @@ const Categories = () => {
         queryFn: getRecipes,
     });
 
-    const recipes = Array.isArray(data) ? data : [];
+    const recipes = data?.recipes || [];
 
     // Unique categories
     const categories = [
