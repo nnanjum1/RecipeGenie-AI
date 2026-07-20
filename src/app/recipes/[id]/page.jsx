@@ -26,76 +26,74 @@ const RecipeDetails = () => {
     const [favorite, setFavorite] = useState(false);
 
     useEffect(() => {
+        const loadFavoriteStatus = async () => {
+            if (!session?.user?.email || !id) return;
 
-        if (!session?.user?.email) return;
+            const res = await checkFavorite(id, session.user.email);
+            setFavorite(res.isFavorite);
+        };
 
-        checkFavorite(id, session.user.email)
-            .then(res => setFavorite(res.isFavorite));
-
+        loadFavoriteStatus();
     }, [id, session]);
 
 
-    const handleFavorite = async () => {
 
+
+    const handleFavorite = async () => {
         if (!session?.user) {
             toast.error("Please login first");
             return;
         }
 
+        if (favorite) return;
+
         try {
+            await saveFavorite(id, session.user.email);
 
-            if (favorite) {
-
-                await removeFavorite(
-                    id,
-                    session.user.email
-                );
-
-                toast.success("Removed from favorites");
-
-                setFavorite(false);
-
-            } else {
-
-                await saveFavorite(
-                    id,
-                    session.user.email
-                );
-
-                toast.success("Added to favorites");
-
-                setFavorite(true);
-
-            }
+            setFavorite(true);
 
             queryClient.invalidateQueries({
                 queryKey: ["recipe", id],
             });
 
+            toast.success("Recipe saved");
+
         } catch (error) {
-
             toast.error("Something went wrong");
-
         }
-
     };
 
 
 
 
+    // const {
+    //     data: recipe,
+    //     isLoading,
+    //     error
+    // } = useQuery({
+
+    //     queryKey: ["recipe", id],
+
+    //     queryFn: () => getRecipe(id),
+
+    //     enabled: !!id
+
+    // });
+
+
     const {
         data: recipe,
         isLoading,
-        error
     } = useQuery({
-
         queryKey: ["recipe", id],
-
         queryFn: () => getRecipe(id),
-
-        enabled: !!id
-
+        enabled: !!id,
+        staleTime: 0,
+        refetchOnMount: "always",
+        refetchOnWindowFocus: true,
+        refetchOnReconnect: true,
     });
+
 
 
 
@@ -401,9 +399,10 @@ const RecipeDetails = () => {
                 {session?.user && (
                     <button
                         onClick={handleFavorite}
+                        disabled={favorite}
                         className={`px-5 py-2 rounded-xl font-semibold ${favorite
-                            ? "bg-red-500 text-white"
-                            : "bg-orange-400 text-white"
+                            ? "bg-gray-400 text-white cursor-not-allowed"
+                            : "bg-orange-500 text-white hover:bg-orange-600"
                             }`}
                     >
                         {favorite ? "❤️ Saved" : "🤍 Save Recipe"}
