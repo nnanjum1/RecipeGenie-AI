@@ -2,18 +2,9 @@ import api from "./api";
 
 
 
-export const getRecipes = async ({ queryKey }) => {
-
-    const page = queryKey[1]?.page || 1;
-
-
-    const res = await api.get(
-        `/recipes?page=${page}&limit=8`
-    );
-
-
+export const getRecipes = async (page = 1) => {
+    const res = await api.get(`/recipes?page=${page}&limit=8`);
     return res.data;
-
 };
 
 export const getMyRecipes = async (email) => {
