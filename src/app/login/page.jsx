@@ -68,8 +68,8 @@ const LoginPage = () => {
     };
 
     const handleDemoLogin = () => {
-        setValue("email", "demo@recipegenie.ai");
-        setValue("password", "Demo@123");
+        setValue("email", "anjumayra11111@gmail.com");
+        setValue("password", "Abcde1");
     };
     if (isPending) {
         return <p>Loading...</p>;

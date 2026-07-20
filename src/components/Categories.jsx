@@ -37,7 +37,7 @@ const Categories = () => {
             <div className="max-w-7xl mx-auto px-4">
                 <SectionTitle
                     title="Recipe Categories"
-                    subtitle="Browse recipes by meal type."
+                    subtitle="A collection of flavors from around the world."
                 />
 
                 {isLoading ? (

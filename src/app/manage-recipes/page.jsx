@@ -128,9 +128,18 @@ const ManageRecipes = () => {
                 recipes.length === 0 ?
 
                     (
-                        <p className="text-center text-gray-500">
-                            No recipes found
-                        </p>
+                        <div className="min-h-[400px] flex flex-col items-center justify-center gap-4">
+                            <p className="text-center text-gray-500">
+                                No recipes found
+                            </p>
+
+                            <Link
+                                href="/add-recipe"
+                                className="bg-orange-500 text-white px-6 py-3 rounded-xl"
+                            >
+                                Add Recipe
+                            </Link>
+                        </div>
                     )
 
                     :

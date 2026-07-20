@@ -28,7 +28,7 @@ const FeaturedRecipes = () => {
             <div className="max-w-7xl mx-auto px-4">
                 <SectionTitle
                     title="Featured Recipes"
-                    subtitle="Explore our most loved AI-powered recipes."
+                    subtitle="Explore our latest recipes."
                 />
 
                 <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-8">
