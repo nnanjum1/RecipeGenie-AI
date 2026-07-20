@@ -2,10 +2,17 @@ import api from "./api";
 
 
 
-export const getRecipes = async (page = 1) => {
-    const res = await api.get(`/recipes?page=${page}&limit=8`);
-    return res.data;
+export const getRecipes = async () => {
+    console.log("Base URL:", api.defaults.baseURL);
+
+    const response = await api.get("/recipes");
+
+    console.log("Response:", response);
+    console.log("Data:", response.data);
+
+    return response.data;
 };
+
 
 export const getMyRecipes = async (email) => {
 

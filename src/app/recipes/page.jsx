@@ -15,25 +15,25 @@ export default function RecipesPage() {
     const [difficulty, setDifficulty] = useState("All");
     const [sort, setSort] = useState("latest");
 
-    const [page, setPage] = useState(1);
 
 
     const {
         data,
         isLoading,
     } = useQuery({
-        queryKey: ["recipes", page],
-        queryFn: () => getRecipes(page),
-
+        queryKey: ["recipes"],
+        queryFn: getRecipes,
         refetchOnMount: "always",
         refetchOnWindowFocus: true,
     });
 
+    // const recipes = Array.isArray(data) ? data : [];
     const recipes = data?.recipes || [];
 
-    const totalPages = data?.totalPages || 1;
 
 
+    console.log("API Data:", data);
+    console.log("Recipes:", recipes);
     const filteredRecipes = useMemo(() => {
 
         let result = [...recipes];
@@ -346,34 +346,7 @@ export default function RecipesPage() {
                 )
             }
 
-            <div className="flex justify-center gap-3 mt-10">
 
-
-                {
-                    [...Array(totalPages)].map((_, index) => (
-
-                        <button
-
-                            key={index}
-
-                            onClick={() => setPage(index + 1)}
-
-                            className={`px-4 py-2 rounded-lg ${page === index + 1
-                                ? "bg-orange-500 text-white"
-                                : "bg-gray-100"
-                                }`}
-
-                        >
-
-                            {index + 1}
-
-                        </button>
-
-                    ))
-                }
-
-
-            </div>
 
 
         </div>
