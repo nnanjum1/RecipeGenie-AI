@@ -39,20 +39,6 @@ export const updateRecipe = async ({ id, recipe }) => {
     return data;
 };
 
-export const likeRecipe = async (id, change) => {
-
-    const { data } = await api.patch(
-        `/recipes/like/${id}`,
-        {
-            change
-        }
-    );
-
-    return data;
-
-};
-
-
 
 
 export const generateRecipe = async (recipeData) => {
@@ -82,5 +68,40 @@ export const getRecipeImage = async (query) => {
 
 
     return res.data.image;
+
+};
+
+export const checkFavorite = async (recipeId, email) => {
+    const { data } = await api.get(
+        `/favorites/${recipeId}/${encodeURIComponent(email)}`
+    );
+    return data;
+};
+
+export const saveFavorite = async (recipeId, userEmail) => {
+    const { data } = await api.post("/favorites", {
+        recipeId,
+        userEmail,
+    });
+    return data;
+};
+
+export const removeFavorite = async (recipeId, userEmail) => {
+    const { data } = await api.delete("/favorites", {
+        data: {
+            recipeId,
+            userEmail,
+        },
+    });
+    return data;
+};
+
+export const getMyFavorites = async (email) => {
+
+    const { data } = await api.get(
+        `/favorites/${encodeURIComponent(email)}`
+    );
+
+    return data;
 
 };

@@ -312,8 +312,8 @@ export default function RecipesPage() {
                                                 </span>
 
                                                 <p>
-                                                    Liked by <span className="font-semibold text-gray-800">
-                                                        {recipe.likes || 0}
+                                                    Saved by <span className="font-semibold text-gray-800">
+                                                        {recipe.favorites || 0}
                                                     </span> people
                                                 </p>
 

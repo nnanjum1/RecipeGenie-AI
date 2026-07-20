@@ -133,7 +133,7 @@ const AddRecipe = () => {
 
                 // voting
 
-                likes: 0,
+                favorites: 0,
 
 
 
@@ -342,11 +342,37 @@ const AddRecipe = () => {
                             <option value="">Select Category</option>
 
                             <option>Breakfast</option>
+                            <option>Brunch</option>
                             <option>Lunch</option>
                             <option>Dinner</option>
-                            <option>Dessert</option>
+                            <option>Appetizer</option>
+                            <option>Soup</option>
+                            <option>Salad</option>
+                            <option>Main Course</option>
+                            <option>Side Dish</option>
                             <option>Snack</option>
+                            <option>Dessert</option>
+                            <option>Bakery</option>
                             <option>Beverage</option>
+                            <option>Smoothie</option>
+                            <option>Juice</option>
+                            <option>Seafood</option>
+                            <option>Chicken</option>
+                            <option>Beef</option>
+                            <option>Vegetarian</option>
+                            <option>Vegan</option>
+                            <option>Pasta</option>
+                            <option>Pizza</option>
+                            <option>Rice</option>
+                            <option>Noodles</option>
+                            <option>BBQ</option>
+                            <option>Street Food</option>
+                            <option>Healthy</option>
+                            <option>Low Carb</option>
+                            <option>High Protein</option>
+                            <option>Gluten Free</option>
+                            <option>Kids</option>
+                            <option>Holiday Special</option>
 
                         </select>
 

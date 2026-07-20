@@ -2,13 +2,17 @@
 
 import { useParams } from "next/navigation";
 import { Clock, Users, ChefHat } from "lucide-react";
-import { getRecipe } from "@/services/recipeApi";
 import { useEffect, useState } from "react";
-import { likeRecipe } from "@/services/recipeApi";
-import { FaThumbsUp } from "react-icons/fa";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
+import {
+    getRecipe,
+    checkFavorite,
+    saveFavorite,
+    removeFavorite,
+} from "@/services/recipeApi";
+
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 const RecipeDetails = () => {
 
@@ -19,21 +23,63 @@ const RecipeDetails = () => {
 
     const queryClient = useQueryClient();
 
-    const [liked, setLiked] = useState(false);
+    const [favorite, setFavorite] = useState(false);
+
+    useEffect(() => {
+
+        if (!session?.user?.email) return;
+
+        checkFavorite(id, session.user.email)
+            .then(res => setFavorite(res.isFavorite));
+
+    }, [id, session]);
 
 
-    const likeMutation = useMutation({
+    const handleFavorite = async () => {
 
-        mutationFn: ({ id, change }) =>
-            likeRecipe(id, change),
-
-        onSuccess: () => {
-            queryClient.invalidateQueries({
-                queryKey: ["recipe", id]
-            });
+        if (!session?.user) {
+            toast.error("Please login first");
+            return;
         }
 
-    });
+        try {
+
+            if (favorite) {
+
+                await removeFavorite(
+                    id,
+                    session.user.email
+                );
+
+                toast.success("Removed from favorites");
+
+                setFavorite(false);
+
+            } else {
+
+                await saveFavorite(
+                    id,
+                    session.user.email
+                );
+
+                toast.success("Added to favorites");
+
+                setFavorite(true);
+
+            }
+
+            queryClient.invalidateQueries({
+                queryKey: ["recipe", id],
+            });
+
+        } catch (error) {
+
+            toast.error("Something went wrong");
+
+        }
+
+    };
+
 
 
 
@@ -51,66 +97,9 @@ const RecipeDetails = () => {
 
     });
 
-    useEffect(() => {
-        const isLiked = localStorage.getItem(`liked-${id}`);
-
-        setLiked(isLiked === "true");
-    }, [id]);
-
-    const handleLike = async () => {
-
-        try {
-
-            const newLikedStatus = !liked;
 
 
-            const res = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/recipes/like/${id}`,
-                {
-                    method: "PATCH",
 
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-
-                    body: JSON.stringify({
-                        liked: newLikedStatus
-                    })
-                }
-            );
-
-
-            if (res.ok) {
-
-                setLiked(newLikedStatus);
-
-                toast.success(
-                    newLikedStatus
-                        ? "Recipe liked!"
-                        : "Like removed!"
-                );
-
-                queryClient.invalidateQueries({
-                    queryKey: [
-                        "recipe",
-                        id
-                    ]
-                });
-
-            }
-
-        }
-        catch (error) {
-
-            console.log(error);
-
-            toast.error(
-                "Something went wrong"
-            );
-
-        }
-
-    };
 
 
 
@@ -379,7 +368,7 @@ const RecipeDetails = () => {
 
                                 >
 
-                                    <div className="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center shrink-0">
+                                    <div className="w-8 h-8 rounded-full bg-orange-300 text-white flex items-center justify-center shrink-0">
 
                                         {index + 1}
 
@@ -408,22 +397,22 @@ const RecipeDetails = () => {
 
 
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4 mt-8">
+                {session?.user && (
+                    <button
+                        onClick={handleFavorite}
+                        className={`px-5 py-2 rounded-xl font-semibold ${favorite
+                            ? "bg-red-500 text-white"
+                            : "bg-orange-400 text-white"
+                            }`}
+                    >
+                        {favorite ? "❤️ Saved" : "🤍 Save Recipe"}
+                    </button>
+                )}
 
-                <button
-                    onClick={handleLike}
-                    className={`font-semibold transition ${liked
-                        ? "text-green-700"
-                        : "text-green-500 hover:text-green-600"
-                        }`}
-                >
-                    {liked ? "Liked" : "Like"}
-                </button>
-
-
-                <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
-                    {recipe.likes || 0}
-                </span>
+                <div className="bg-red-100 text-red-600 text-center px-4 py-2 rounded-full">
+                    ❤️ Saved by <strong>{recipe.favorites || 0}</strong> people
+                </div>
 
             </div>
 

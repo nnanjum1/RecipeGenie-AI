@@ -12,7 +12,7 @@ import { authClient } from "@/lib/auth-client";
 const EditRecipe = () => {
 
     const { data: session, isPending } = authClient.useSession();
-
+    const [previewImage, setPreviewImage] = useState("");
     const { id } = useParams();
     const router = useRouter();
     const queryClient = useQueryClient();
@@ -44,7 +44,13 @@ const EditRecipe = () => {
         }
     } = useForm();
 
-
+    useEffect(() => {
+        return () => {
+            if (previewImage?.startsWith("blob:")) {
+                URL.revokeObjectURL(previewImage);
+            }
+        };
+    }, [previewImage]);
 
     useEffect(() => {
 
@@ -57,7 +63,7 @@ const EditRecipe = () => {
                 const recipe = res.data;
 
                 setOldImage(recipe.image);
-
+                setPreviewImage(recipe.image);
 
                 reset({
 
@@ -298,13 +304,20 @@ const EditRecipe = () => {
                         accept="image/*"
                         className="w-full border rounded-xl p-3 mt-2"
                         {...register("image")}
+                        onChange={(e) => {
+                            const file = e.target.files?.[0];
+
+                            if (file) {
+                                setPreviewImage(URL.createObjectURL(file));
+                            }
+                        }}
                     />
 
 
                     <img
-                        src={oldImage}
-                        alt="old"
-                        className="mt-4 w-40 h-28 object-cover rounded-xl"
+                        src={previewImage}
+                        alt="Preview"
+                        className="mt-4 w-48 h-36 object-cover rounded-xl border"
                     />
 
                 </div>
@@ -378,11 +391,37 @@ const EditRecipe = () => {
                     >
 
                         <option>Breakfast</option>
+                        <option>Brunch</option>
                         <option>Lunch</option>
                         <option>Dinner</option>
-                        <option>Dessert</option>
+                        <option>Appetizer</option>
+                        <option>Soup</option>
+                        <option>Salad</option>
+                        <option>Main Course</option>
+                        <option>Side Dish</option>
                         <option>Snack</option>
+                        <option>Dessert</option>
+                        <option>Bakery</option>
                         <option>Beverage</option>
+                        <option>Smoothie</option>
+                        <option>Juice</option>
+                        <option>Seafood</option>
+                        <option>Chicken</option>
+                        <option>Beef</option>
+                        <option>Vegetarian</option>
+                        <option>Vegan</option>
+                        <option>Pasta</option>
+                        <option>Pizza</option>
+                        <option>Rice</option>
+                        <option>Noodles</option>
+                        <option>BBQ</option>
+                        <option>Street Food</option>
+                        <option>Healthy</option>
+                        <option>Low Carb</option>
+                        <option>High Protein</option>
+                        <option>Gluten Free</option>
+                        <option>Kids</option>
+                        <option>Holiday Special</option>
 
                     </select>
 
