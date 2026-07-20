@@ -6,6 +6,7 @@ import { getRecipes } from "@/services/recipeApi";
 import RecipeCard from "./RecipeCard";
 import RecipeSkeleton from "./RecipeSkeleton";
 import SectionTitle from "./SectionTitle";
+import Link from "next/link";
 
 const FeaturedRecipes = () => {
     const { data, isLoading } = useQuery({

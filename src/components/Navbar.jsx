@@ -18,6 +18,7 @@ import {
 import { authClient } from "@/lib/auth-client";
 import { RiChatAiLine } from "react-icons/ri";
 import { FaUser } from "react-icons/fa";
+import { MdCollections } from "react-icons/md";
 
 const Navbar = () => {
     const pathname = usePathname();
@@ -163,6 +164,16 @@ const Navbar = () => {
                                         </Link>
 
                                         <Link
+                                            href="/saved-recipes"
+                                            onClick={() => setProfileOpen(false)}
+
+                                            className="flex items-center gap-3 px-4 py-3 hover:bg-orange-50"
+                                        >
+                                            <MdCollections size={18} />
+                                            Saved Recipes
+                                        </Link>
+
+                                        <Link
                                             href="/chat"
                                             onClick={() => setProfileOpen(false)}
 
@@ -270,7 +281,9 @@ const Navbar = () => {
                                     <Link href="/manage-recipes" onClick={() => setOpen(false)}>
                                         Manage Recipes
                                     </Link>
-
+                                    <Link href="/saved-recipes" onClick={() => setOpen(false)}>
+                                        Saved Recipes
+                                    </Link>
                                     <Link href="/chat" onClick={() => setOpen(false)}>
                                         AI Chat
                                     </Link>
