@@ -87,12 +87,10 @@ export const saveFavorite = async (recipeId, userEmail) => {
 };
 
 export const removeFavorite = async (recipeId, userEmail) => {
-    const { data } = await api.delete("/favorites", {
-        data: {
-            recipeId,
-            userEmail,
-        },
-    });
+    const { data } = await api.delete(
+        `/favorites/${recipeId}?userEmail=${encodeURIComponent(userEmail)}`
+    );
+
     return data;
 };
 
