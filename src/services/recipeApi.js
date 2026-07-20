@@ -114,3 +114,20 @@ export const removeFavorite = async (recipeId, email) => {
     return data;
 
 };
+export const addReview = async (reviewData) => {
+
+    const { data } = await api.post(
+        "/reviews",
+        reviewData
+    );
+
+    return data;
+
+};
+export const getReviews = async () => {
+
+    const { data } = await api.get("/reviews");
+
+    return data;
+
+};

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
-
+import { addReview } from "@/services/recipeApi";
 
 const ProfilePage = () => {
 
@@ -17,6 +17,7 @@ const ProfilePage = () => {
     const [rating, setRating] = useState(5);
 
 
+    const [submitting, setSubmitting] = useState(false);
 
     useEffect(() => {
 
@@ -30,62 +31,30 @@ const ProfilePage = () => {
 
     const submitReview = async () => {
 
+        setSubmitting(true);
 
-        if (!session?.user) {
-            toast.error("Please login first");
-            return;
-        }
+        try {
 
+            await addReview({
+                name: session.user.name,
+                email: session.user.email,
+                review,
+                rating
+            });
 
-        if (!review.trim()) {
-
-            toast.error("Please write your review");
-
-            return;
-
-        }
-
-
-        const response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/reviews`,
-            {
-
-                method: "POST",
-
-                headers: {
-                    "Content-Type": "application/json"
-                },
-
-                body: JSON.stringify({
-
-                    name: session.user.name,
-
-                    email: session.user.email,
-
-                    review,
-
-                    rating: Number(rating)
-
-                })
-
-            }
-        );
-
-
-        if (response.ok) {
-
-            toast.success(
-                "Thanks for your review!"
-            );
+            toast.success("Thanks for your review!");
 
             setReview("");
 
         }
-        else {
+        catch (error) {
 
-            toast.error(
-                "Failed to submit review"
-            );
+            toast.error("Failed to submit review");
+
+        }
+        finally {
+
+            setSubmitting(false);
 
         }
 
@@ -191,8 +160,8 @@ const ProfilePage = () => {
                     <select
 
                         value={rating}
+                        onChange={(e) => setRating(Number(e.target.value))}
 
-                        onChange={(e) => setRating(e.target.value)}
 
                         className="
                         ml-3 border rounded-lg p-2
@@ -227,17 +196,20 @@ const ProfilePage = () => {
 
 
                 <button
-
+                    disabled={submitting}
                     onClick={submitReview}
-
                     className="
-                    mt-6 bg-orange-500
-                    text-white px-8 py-3
-                    rounded-xl
-                    "
-
+    mt-6 bg-orange-500
+    text-white px-8 py-3
+    rounded-xl
+    disabled:opacity-50
+    "
                 >
-                    Submit Review
+                    {
+                        submitting
+                            ? "Submitting..."
+                            : "Submit Review"
+                    }
 
                 </button>
 

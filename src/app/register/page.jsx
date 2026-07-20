@@ -180,11 +180,9 @@ const RegisterPage = () => {
                                 {...register("password", {
                                     required: "Password is required",
                                     pattern: {
-                                        value:
-                                            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{6,}$/,
-                                        message:
-                                            "Must contain uppercase, lowercase, number & special character",
-                                    },
+                                        value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/,
+                                        message: "Must contain uppercase, lowercase, and number"
+                                    }
                                 })}
                             />
 
