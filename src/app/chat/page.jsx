@@ -5,7 +5,7 @@ import { authClient } from "@/lib/auth-client";
 import { redirect } from "next/navigation";
 import { Bot, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
-
+import DeleteChatModal from "@/components/chat/DeleteChatModal";
 import EmptyState from "@/components/chat/EmptyState";
 import TypingIndicator from "@/components/chat/TypingIndicator";
 import ChatMessage from "@/components/chat/ChatMessage";
@@ -126,7 +126,7 @@ export default function ChatPage() {
     if (!session) {
         redirect("/login");
     }
-
+    console.log("showDeleteModal:", showDeleteModal);
     return (
         <div className="mx-auto max-w-5xl px-5 py-10">
             <div className="overflow-hidden rounded-3xl border bg-white shadow-xl">
@@ -154,7 +154,10 @@ export default function ChatPage() {
                     </div>
 
                     <button
-                        onClick={() => setShowDeleteModal(true)}
+                        onClick={() => {
+                            console.log("clicked");
+                            setShowDeleteModal(true);
+                        }}
                         className="rounded-xl bg-white p-3 text-orange-500 transition hover:bg-orange-100"
                     >
                         <Trash2 size={20} />
@@ -192,6 +195,12 @@ export default function ChatPage() {
                     setInput={setInput}
                     sendMessage={sendMessage}
                     loading={loading}
+                />
+
+                <DeleteChatModal
+                    isOpen={showDeleteModal}
+                    onClose={() => setShowDeleteModal(false)}
+                    onConfirm={clearChat}
                 />
 
             </div>
