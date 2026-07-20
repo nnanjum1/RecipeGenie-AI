@@ -15,7 +15,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function ChatPage() {
     const { data: session, isPending } = authClient.useSession();
-
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState("");
     const [loading, setLoading] = useState(false);
@@ -107,6 +107,7 @@ export default function ChatPage() {
             );
 
             setMessages([]);
+            setShowDeleteModal(false);
 
             toast.success("Conversation cleared");
         } catch (error) {
@@ -153,7 +154,7 @@ export default function ChatPage() {
                     </div>
 
                     <button
-                        onClick={clearChat}
+                        onClick={() => setShowDeleteModal(true)}
                         className="rounded-xl bg-white p-3 text-orange-500 transition hover:bg-orange-100"
                     >
                         <Trash2 size={20} />

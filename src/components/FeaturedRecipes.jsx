@@ -42,7 +42,21 @@ const FeaturedRecipes = () => {
                             />
                         ))}
                 </div>
+
+                {!isLoading && (
+                    <div className="flex justify-center mt-12">
+                        <Link
+                            href="/recipes"
+                            className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-8 py-3 rounded-xl transition duration-300"
+                        >
+                            View All Recipes
+                        </Link>
+                    </div>
+                )}
             </div>
+
+
+
         </section>
     );
 };

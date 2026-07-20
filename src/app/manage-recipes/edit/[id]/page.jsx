@@ -52,6 +52,25 @@ const EditRecipe = () => {
         };
     }, [previewImage]);
 
+
+    const formatIngredientsForInput = (ingredients = []) => {
+        return ingredients
+            .map(item => {
+
+                if (typeof item === "string") {
+                    return item;
+                }
+
+                if (typeof item === "object") {
+                    return `${item.name || ""} ${item.quantity || ""}`.trim();
+                }
+
+                return "";
+
+            })
+            .filter(Boolean)
+            .join("\n");
+    };
     useEffect(() => {
 
         const fetchRecipe = async () => {
@@ -83,7 +102,7 @@ const EditRecipe = () => {
 
                     servings: recipe.servings,
 
-                    ingredients: recipe.ingredients.join("\n"),
+                    ingredients: formatIngredientsForInput(recipe.ingredients),
 
                     instructions: recipe.instructions.join("\n"),
 
