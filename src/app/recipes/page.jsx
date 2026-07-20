@@ -11,19 +11,22 @@ export default function RecipesPage() {
     const [category, setCategory] = useState("All");
     const [difficulty, setDifficulty] = useState("All");
     const [sort, setSort] = useState("latest");
+    const [page, setPage] = useState(1);
+
 
     const {
-        data = [],
+        data,
         isLoading,
         isError,
     } = useQuery({
-        queryKey: ["recipes"],
-        queryFn: getRecipes,
-        refetchOnMount: "always",
-        refetchOnWindowFocus: true,
+        queryKey: ["recipes", page],
+        queryFn: () => getRecipes(page),
+        keepPreviousData: true,
     });
 
-    const recipes = Array.isArray(data) ? data : [];
+    const recipes = data?.recipes || [];
+    const totalPages = data?.totalPages || 1;
+
 
     const filteredRecipes = useMemo(() => {
         let result = [...recipes];
@@ -232,6 +235,40 @@ export default function RecipesPage() {
                     ))}
                 </div>
             )}
+
+
+            <div className="flex justify-center items-center gap-2 mt-10">
+
+                <button
+                    disabled={page === 1}
+                    onClick={() => setPage(page - 1)}
+                    className="px-4 py-2 rounded-lg bg-gray-200 disabled:opacity-50"
+                >
+                    Previous
+                </button>
+
+                {[...Array(totalPages)].map((_, index) => (
+                    <button
+                        key={index}
+                        onClick={() => setPage(index + 1)}
+                        className={`px-4 py-2 rounded-lg transition ${page === index + 1
+                            ? "bg-orange-500 text-white"
+                            : "bg-gray-100 hover:bg-orange-100"
+                            }`}
+                    >
+                        {index + 1}
+                    </button>
+                ))}
+
+                <button
+                    disabled={page === totalPages}
+                    onClick={() => setPage(page + 1)}
+                    className="px-4 py-2 rounded-lg bg-gray-200 disabled:opacity-50"
+                >
+                    Next
+                </button>
+
+            </div>
         </div>
     );
 }
