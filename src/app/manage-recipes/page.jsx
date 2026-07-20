@@ -201,7 +201,7 @@ const ManageRecipes = () => {
 
                                                 <Link
                                                     href={`/recipes/${recipe._id}`}
-                                                    className="flex-1 flex justify-center items-center gap-2 bg-orange-500 text-white py-2 rounded-xl"
+                                                    className="flex justify-center items-center gap-2 bg-orange-500 text-white py-2 px-4 rounded-xl"
                                                 >
                                                     <Eye size={18} />
                                                     View
@@ -210,7 +210,7 @@ const ManageRecipes = () => {
 
                                                 <Link
                                                     href={`/manage-recipes/edit/${recipe._id}`}
-                                                    className="px-4 bg-blue-500 text-white rounded-xl flex items-center justify-center"
+                                                    className="px-6 bg-blue-500 text-white rounded-xl flex items-center justify-center"
                                                 >
                                                     <Pencil size={18} />
                                                 </Link>
@@ -218,7 +218,7 @@ const ManageRecipes = () => {
 
                                                 <button
                                                     onClick={() => handleDelete(recipe)}
-                                                    className="px-4 bg-red-500 text-white rounded-xl"
+                                                    className="px-6 bg-red-500 text-white rounded-xl"
                                                 >
                                                     <Trash2 size={18} />
                                                 </button>
